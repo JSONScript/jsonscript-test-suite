@@ -11,7 +11,7 @@
     },
     "tests": [
       {
-        "description": "data",
+        "description": "'' -> data",
         "script": { "$data": "" },
         "result": {
           "": "abc",
@@ -23,17 +23,17 @@
         }
       },
       {
-        "description": "data['']",
+        "description": "/ -> data['']",
         "script": { "$data": "/" },
         "result": "abc"
       },
       {
-        "description": "data.foo",
+        "description": "/foo -> data.foo",
         "script": { "$data": "/foo" },
         "result": 1
       },
       {
-        "description": "data['~bar']",
+        "description": "/~0bar -> data['~bar']",
         "script": { "$data": "/~0bar" },
         "result": {
           "/baz": 2,
@@ -41,12 +41,12 @@
         }
       },
       {
-        "description": "data['~bar']['/baz']",
+        "description": "/~0bar/~1baz -> data['~bar']['/baz']",
         "script": { "$data": "/~0bar/~1baz" },
         "result": 2
       },
       {
-        "description": "data['~bar']['%quux']",
+        "description": "/~0bar/%quux -> data['~bar']['%quux']",
         "script": { "$data": "/~0bar/%quux" },
         "result": 3
       }
@@ -64,7 +64,7 @@
     },
     "tests": [
       {
-        "description": "data",
+        "description": "# -> data",
         "script": { "$data": "#" },
         "result": {
           "": "abc",
@@ -76,17 +76,17 @@
         }
       },
       {
-        "description": "data['']",
+        "description": "#/ -> data['']",
         "script": { "$data": "#/" },
         "result": "abc"
       },
       {
-        "description": "data.foo",
+        "description": "#/foo -> data.foo",
         "script": { "$data": "#/foo" },
         "result": 1
       },
       {
-        "description": "data['~bar']",
+        "description": "#/~0bar -> data['~bar']",
         "script": { "$data": "#/~0bar" },
         "result": {
           "/baz": 2,
@@ -94,14 +94,63 @@
         }
       },
       {
-        "description": "data['~bar']['/baz']",
+        "description": "#/~0bar/~1baz -> data['~bar']['/baz']",
         "script": { "$data": "#/~0bar/~1baz" },
         "result": 2
       },
       {
-        "description": "data['~bar']['%quux']",
+        "description": "#/~0bar/%25quux -> data['~bar']['%quux']",
         "script": { "$data": "#/~0bar/%25quux" },
         "result": 3
+      }
+    ]
+  },
+  {
+    "description": "$data with JSON pointer as another $data instruction",
+    "data": {
+      "foo": "bar",
+      "pointer": "/foo",
+      "pointer2": "/pointer"
+    },
+    "tests": [
+      {
+        "description": "$data($data)",
+        "script": { "$data": { "$data": "/pointer" } },
+        "result": "bar"
+      },
+      {
+        "description": "$data($data($data))",
+        "script": { "$data": { "$data": { "$data": "/pointer2" } } },
+        "result": "bar"
+      }
+    ]
+  },
+  {
+    "description": "$data errors",
+    "data": {
+      "foo": 1,
+      "baz": 2
+    },
+    "tests": [
+      {
+        "description": "invalid JSON pointer",
+        "script": { "$data": "foo" },
+        "error": true
+      },
+      {
+        "description": "valid JSON pointer not pointing to any data",
+        "script": { "$data": "/abc" },
+        "error": true
+      },
+      {
+        "description": "valid JSON pointer not pointing to any data 2",
+        "script": { "$data": "/foo/bar" },
+        "error": true
+      },
+      {
+        "description": "valid JSON pointer is not resolvable",
+        "script": { "$data": "/abc/baz" },
+        "error": true
       }
     ]
   }

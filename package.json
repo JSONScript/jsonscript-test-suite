@@ -1,7 +1,7 @@
 {
   "name": "jsonscript-test-suite",
   "version": "0.1.0",
-  "description": "Tests for JSONScript interpreter",
+  "description": "Tests for JSONScript interpreters",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha spec/*.spec.js -R spec"

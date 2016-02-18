@@ -1,69 +1,72 @@
 {
-    "id": "https://raw.githubusercontent.com/JSONScript/jsonscript-test/master/test_suite_schema.json",
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "schema for the test suite of the JSONScript scripts",
-    "definitions": {
-        "nonEmptyString": {
-            "id": "#nonEmptyString",
-            "type": "string",
-            "minLength": 1
-        }
-    },
-    "type": "array",
-    "minItems": 1,
-    "items": {
-        "description": "set of tests for one script or for one data instance",
-        "type": "object",
-        "required": [ "description", "tests" ],
-        "oneOf": [
-            {
-                "required": [ "script" ],
-                "items": { "required": [ "data" ] }
-            },
-            {
-                "required": [ "data" ],
-                "items": { "required": [ "script" ] }
-            }
-        ],
-        "properties": {
+  "id": "https://raw.githubusercontent.com/JSONScript/jsonscript-test/master/test_suite_schema.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "schema for the test suite of the JSONScript scripts",
+  "definitions": {
+    "nonEmptyString": {
+      "id": "#nonEmptyString",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "description": "set of tests for one script or for one data instance",
+    "type": "object",
+    "required": [ "description", "tests" ],
+    "oneOf": [
+      {
+        "required": [ "script" ],
+        "items": { "required": [ "data" ] }
+      },
+      {
+        "required": [ "data" ],
+        "items": { "required": [ "script" ] }
+      }
+    ],
+    "properties": {
+      "description": { "$ref": "#nonEmptyString" },
+      "script": {
+        "description": "JSONScript to test",
+        "$ref": "http://json-script.com/schema/schema.json#"
+      },
+      "data": {
+        "description": "data instance, can be any type"
+      },
+      "tests": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "description": "one test, should either have 'result' or 'error' property but not both",
+          "type": "object",
+          "required": [ "description" ],
+          "oneOf": [
+            { "required": [ "result" ] },
+            { "required": [ "error" ] }
+          ],
+          "properties": {
             "description": { "$ref": "#nonEmptyString" },
             "script": {
-                "description": "JSONScript to test",
-                "$ref": "http://json-script.com/schema/schema.json#"
+              "description": "JSONScript to test",
+              "$ref": "http://json-script.com/schema/schema.json#"
             },
             "data": {
-                "description": "data instance, can be any type"
+              "description": "data instance, can be any type"
             },
-            "tests": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                    "description": "one test, should either have 'result' or 'error' property but not both",
-                    "type": "object",
-                    "required": [ "description" ],
-                    "oneOf": [
-                        { "required": [ "result" ] },
-                        { "required": [ "error" ] }
-                    ],
-                    "properties": {
-                        "description": { "$ref": "#nonEmptyString" },
-                        "script": {
-                            "description": "JSONScript to test",
-                            "$ref": "http://json-script.com/schema/schema.json#"
-                        },
-                        "data": {
-                            "description": "data instance, can be any type"
-                        },
-                        "result": {
-                            "description": "the result of script evaluation with the data instance"
-                        },
-                        "error": {
-                            "description": "expected error message",
-                            "$ref": "#nonEmptyString"
-                        }
-                    }
-                }
+            "result": {
+              "description": "the result of script evaluation with the data instance"
+            },
+            "error": {
+              "description": "expected error message",
+              "anyOf": [
+                { "enum": [ true ] },
+                { "$ref": "#nonEmptyString" }
+              ]
             }
+          }
         }
+      }
     }
+  }
 }
