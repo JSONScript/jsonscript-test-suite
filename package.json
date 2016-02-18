@@ -1,0 +1,29 @@
+{
+  "name": "jsonscript-test-suite",
+  "version": "0.1.0",
+  "description": "Tests for JSONScript interpreter",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha spec/*.spec.js -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JSONScript/jsonscript-test-suite.git"
+  },
+  "keywords": [
+    "JSONScript",
+    "tests"
+  ],
+  "author": "Evgeny Poberezkin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JSONScript/jsonscript-test-suite/issues"
+  },
+  "homepage": "https://github.com/JSONScript/jsonscript-test-suite#readme",
+  "devDependencies": {
+    "ajv": "^3.7.0",
+    "glob": "^7.0.0",
+    "jsonscript": "^0.1.2",
+    "mocha": "^2.4.5"
+  }
+}

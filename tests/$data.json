@@ -1,0 +1,108 @@
+[
+  {
+    "description": "$data with different JSON pointers",
+    "data": {
+      "": "abc",
+      "foo": 1,
+      "~bar": {
+        "/baz": 2,
+        "%quux": 3
+      }
+    },
+    "tests": [
+      {
+        "description": "data",
+        "script": { "$data": "" },
+        "result": {
+          "": "abc",
+          "foo": 1,
+          "~bar": {
+            "/baz": 2,
+            "%quux": 3
+          }
+        }
+      },
+      {
+        "description": "data['']",
+        "script": { "$data": "/" },
+        "result": "abc"
+      },
+      {
+        "description": "data.foo",
+        "script": { "$data": "/foo" },
+        "result": 1
+      },
+      {
+        "description": "data['~bar']",
+        "script": { "$data": "/~0bar" },
+        "result": {
+          "/baz": 2,
+          "%quux": 3
+        }
+      },
+      {
+        "description": "data['~bar']['/baz']",
+        "script": { "$data": "/~0bar/~1baz" },
+        "result": 2
+      },
+      {
+        "description": "data['~bar']['%quux']",
+        "script": { "$data": "/~0bar/%quux" },
+        "result": 3
+      }
+    ]
+  },
+  {
+    "description": "$data with different JSON pointers as URL hash fragments",
+    "data": {
+      "": "abc",
+      "foo": 1,
+      "~bar": {
+        "/baz": 2,
+        "%quux": 3
+      }
+    },
+    "tests": [
+      {
+        "description": "data",
+        "script": { "$data": "#" },
+        "result": {
+          "": "abc",
+          "foo": 1,
+          "~bar": {
+            "/baz": 2,
+            "%quux": 3
+          }
+        }
+      },
+      {
+        "description": "data['']",
+        "script": { "$data": "#/" },
+        "result": "abc"
+      },
+      {
+        "description": "data.foo",
+        "script": { "$data": "#/foo" },
+        "result": 1
+      },
+      {
+        "description": "data['~bar']",
+        "script": { "$data": "#/~0bar" },
+        "result": {
+          "/baz": 2,
+          "%quux": 3
+        }
+      },
+      {
+        "description": "data['~bar']['/baz']",
+        "script": { "$data": "#/~0bar/~1baz" },
+        "result": 2
+      },
+      {
+        "description": "data['~bar']['%quux']",
+        "script": { "$data": "#/~0bar/%25quux" },
+        "result": 3
+      }
+    ]
+  }
+]
