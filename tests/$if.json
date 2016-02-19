@@ -1,0 +1,146 @@
+[
+  {
+    "description": "$if with synchronous conditions and branches",
+    "data": {
+      "condTrue": true,
+      "condFalse": false,
+      "thenValue": "foo",
+      "elseValue": "bar"
+    },
+    "tests": [
+      {
+        "description": "condition is true with constants",
+        "script": { "$if": true, "$then": "foo", "$else": "bar" },
+        "result": "foo"
+      },
+      {
+        "description": "condition is false with constants",
+        "script": { "$if": false, "$then": "foo", "$else": "bar" },
+        "result": "bar"
+      },
+      {
+        "description": "condition is false with constants without else",
+        "script": { "$if": false, "$then": "foo" },
+        "result": null
+      },
+      {
+        "description": "condition evaluates to true with constants",
+        "script": { "$if": { "$data": "/condTrue" }, "$then": "foo", "$else": "bar" },
+        "result": "foo"
+      },
+      {
+        "description": "condition evaluates to false with constants",
+        "script": { "$if": { "$data": "/condFalse" }, "$then": "foo", "$else": "bar" },
+        "result": "bar"
+      },
+      {
+        "description": "condition evaluates to false with constants without else",
+        "script": { "$if": { "$data": "/condFalse" }, "$then": "foo" },
+        "result": null
+      },
+      {
+        "description": "condition is true with scripts",
+        "script": {
+          "$if": true,
+          "$then": { "$data": "/thenValue" },
+          "$else": { "$data": "/elseValue" }
+        },
+        "result": "foo"
+      },
+      {
+        "description": "condition is false with scripts",
+        "script": {
+          "$if": false,
+          "$then": { "$data": "/thenValue" },
+          "$else": { "$data": "/elseValue" }
+        },
+        "result": "bar"
+      },
+      {
+        "description": "condition is false with scripts without else",
+        "script": {
+          "$if": false,
+          "$then": { "$data": "/thenValue" }
+        },
+        "result": null
+      },
+      {
+        "description": "condition evaluates to true with scripts",
+        "script": {
+          "$if": { "$data": "/condTrue" },
+          "$then": { "$data": "/thenValue" },
+          "$else": { "$data": "/elseValue" }
+        },
+        "result": "foo"
+      },
+      {
+        "description": "condition evaluates to false with scripts",
+        "script": {
+          "$if": { "$data": "/condFalse" },
+          "$then": { "$data": "/thenValue" },
+          "$else": { "$data": "/elseValue" }
+        },
+        "result": "bar"
+      },
+      {
+        "description": "condition evaluates to false with scripts without else",
+        "script": {
+          "$if": { "$data": "/condFalse" },
+          "$then": { "$data": "/thenValue" }
+        },
+        "result": null
+      }
+    ]
+  },
+  {
+    "description": "$if/$then/$else can be any script",
+    "data": {
+      "condTrue": true,
+      "condFalse": false,
+      "thenRouter": "router1",
+      "elseRouter": "router2"
+    },
+    "tests": [
+      {
+        "description": "evaluate one of scripts depending on the condition",
+        "script": {
+          "$if": { "$data": "/condTrue" },
+          "$then": { "$exec": "router1", "$method": "get", "$args": { "path": "/resource" } },
+          "$else": { "$exec": "router2", "$method": "get", "$args": { "path": "/resource" } }
+        },
+        "result": "you requested /resource from router1"
+      },
+      {
+        "description": "use result of $if evaluation as the name of executor",
+        "script": {
+          "$exec": {
+            "$if": { "$data": "/condFalse" },
+            "$then": { "$data": "/thenRouter" },
+            "$else": { "$data": "/elseRouter" }
+          },
+          "$method": "get",
+          "$args": { "path": "/resource" }
+        },
+        "result": "you requested /resource from router2"
+      }
+    ]
+  },
+  {
+    "description": "$if errors",
+    "data": {
+      "notBoolean": 1
+    },
+    "tests": [
+      {
+        "description": "$if keyword is constant and it is not boolean",
+        "script": { "$if": 1, "$then": "foo" },
+        "error": true
+      },
+      {
+        "description": "$if is a script that evaluates to non-boolean value",
+        "script": { "$if": { "$data": "/notBoolean" }, "$then": "foo" },
+        "error": true
+      }
+    ]
+  }
+]
