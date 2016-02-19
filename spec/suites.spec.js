@@ -20,7 +20,9 @@ describe('test suites', function() {
 
     files.forEach(function (f) {
       it(path.basename(f), function() {
-        assert(validate(require(f)));
+        var valid = validate(require(f));
+        if (!valid) console.error('Error validating', f, '\nErrors:\n', validate.errors);
+        assert(valid);
       });
     });
   });

@@ -16,15 +16,27 @@
     "type": "object",
     "required": [ "description", "tests" ],
     "oneOf": [
+      { "required": [ "script" ] },
       {
-        "required": [ "script" ],
-        "items": { "required": [ "data" ] }
-      },
-      {
-        "required": [ "data" ],
-        "items": { "required": [ "script" ] }
+        "properties": {
+          "tests": {
+            "items": {
+              "required": [ "script" ]
+            }
+          }
+        }
       }
     ],
+    "not": {
+      "required": [ "data" ],
+      "properties": {
+        "tests": {
+          "items": {
+            "required": [ "data" ]
+          }
+        }
+      }
+    },
     "properties": {
       "description": { "$ref": "#nonEmptyString" },
       "script": {

@@ -1,0 +1,80 @@
+[
+  {
+    "description": "$exec evaluation",
+    "tests": [
+      {
+        "description": "call function",
+        "script": {
+          "$exec": "func1",
+          "$args": { "foo": "bar" }
+        },
+        "result": "func1 called with {\"foo\":\"bar\"}"
+      },
+      {
+        "description": "call method",
+        "script": {
+          "$exec": "router1",
+          "$method": "get",
+          "$args": { "path": "/resource" }
+        },
+        "result": "you requested /resource from router1"
+      },
+      {
+        "description": "use another instruction as part of $args",
+        "script": {
+          "$exec": "router1",
+          "$method": "post",
+          "$args": { "path": "/resource", "body": { "$data": "/object" } }
+        },
+        "data": {
+          "object": { "test": "test" }
+        },
+        "result": "you posted {\"test\":\"test\"} to router1 /resource"
+      },
+      {
+        "description": "use another script as the value of any keyword",
+        "script": {
+          "$exec": { "$data": "/router" },
+          "$method": { "$data": "/method" },
+          "$args": { "$data": "/args" }
+        },
+        "data": {
+          "router": "router1",
+          "method": "post",
+          "args": { "path": "/resource", "body": { "test": "test" } }
+        },
+        "result": "you posted {\"test\":\"test\"} to router1 /resource"
+      }
+    ]
+  },
+  {
+    "description": "$exec errors",
+    "tests": [
+      {
+        "description": "unknown executor",
+        "script": {
+          "$exec": "unknown_router",
+          "$args": { "path": "/resource" }
+        },
+        "error": true
+      },
+      {
+        "description": "unknown method",
+        "script": {
+          "$exec": "router1",
+          "$method": "unknown_method",
+          "$args": { "path": "/resource", "body": { "test": "test" } }
+        },
+        "error": true
+      },
+      {
+        "description": "executor-object used as a function",
+        "script": {
+          "$exec": "router2",
+          "$args": { "path": "/resource" }
+        },
+        "error": true
+      }
+    ]
+  }
+]
