@@ -1,0 +1,85 @@
+[
+  {
+    "description": "$delay with synchronous scripts",
+    "data": { "foo": "bar" },
+    "tests": [
+      {
+        "description": "evaluates constant",
+        "script": { "$delay": 1 },
+        "result": 1
+      },
+      {
+        "description": "evaluates constant with $wait",
+        "script": { "$delay": 1, "$wait": 40 },
+        "result": 1
+      },
+      {
+        "description": "evaluates $data",
+        "script": { "$delay": { "$data": "/foo" } },
+        "result": "bar"
+      },
+      {
+        "description": "evaluates $data with $wait",
+        "script": { "$delay": { "$data": "/foo" }, "$wait": 40 },
+        "result": "bar"
+      }
+    ]
+  },
+  {
+    "description": "$delay with asynchronous scripts",
+    "tests": [
+      {
+        "description": "multiple $delay's",
+        "script": { "$delay": { "$delay": { "$delay": 1 } } },
+        "result": 1
+      },
+      {
+        "description": "multiple $delay's with $wait's",
+        "script": {
+          "$delay": {
+            "$delay": {
+              "$delay": 1,
+              "$wait": 15
+            },
+            "$wait": 15
+          },
+          "$wait": 15
+        },
+        "result": 1
+      },
+      {
+        "description": "evaluates $exec",
+        "script": {
+          "$delay": {
+            "$exec": "router1",
+            "$method": "get",
+            "$args": { "path": "/resource" }
+          }
+        },
+        "result": "you requested /resource from router1"
+      },
+      {
+        "description": "evaluates $exec with $wait",
+        "script": {
+          "$delay": {
+            "$exec": "router1",
+            "$method": "get",
+            "$args": { "path": "/resource" }
+          },
+          "$wait": 20
+        },
+        "result": "you requested /resource from router1"
+      }
+    ]
+  },
+  {
+    "description": "$delay errors",
+    "tests": [
+      {
+        "description": "$wait should be integer",
+        "script": { "$delay": 1, "$wait": 20.5 },
+        "error": true
+      }
+    ]
+  }
+]

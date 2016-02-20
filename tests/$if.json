@@ -93,6 +93,89 @@
     ]
   },
   {
+    "description": "$if with asynchronous conditions and branches",
+    "tests": [
+      {
+        "description": "asynchronous condition is true",
+        "script": {
+          "$if": { "$delay": true },
+          "$then": "foo",
+          "$else": "bar"
+        },
+        "result": "foo"
+      },
+      {
+        "description": "asynchronous condition is false",
+        "script": {
+          "$if": { "$delay": false },
+          "$then": "foo",
+          "$else": "bar"
+        },
+        "result": "bar"
+      },
+      {
+        "description": "asynchronous condition is false without else",
+        "script": {
+          "$if": { "$delay": false },
+          "$then": "foo"
+        },
+        "result": null
+      },
+      {
+        "description": "condition is true with asynchronous branches",
+        "script": {
+          "$if": true,
+          "$then": { "$delay": "foo" },
+          "$else": { "$delay": "bar" }
+        },
+        "result": "foo"
+      },
+      {
+        "description": "condition is false with asynchronous branches",
+        "script": {
+          "$if": false,
+          "$then": { "$delay": "foo" },
+          "$else": { "$delay": "bar" }
+        },
+        "result": "bar"
+      },
+      {
+        "description": "condition is false with asynchronous branches without else",
+        "script": {
+          "$if": false,
+          "$then": { "$delay": "foo" }
+        },
+        "result": null
+      },
+      {
+        "description": "asynchronous condition is true with asynchronous branches",
+        "script": {
+          "$if": { "$delay": true },
+          "$then": { "$delay": "foo" },
+          "$else": { "$delay": "bar" }
+        },
+        "result": "foo"
+      },
+      {
+        "description": "asynchronous condition is false with asynchronous branches",
+        "script": {
+          "$if": { "$delay": false },
+          "$then": { "$delay": "foo" },
+          "$else": { "$delay": "bar" }
+        },
+        "result": "bar"
+      },
+      {
+        "description": "asynchronous condition is false with asynchronous branches without else",
+        "script": {
+          "$if": { "$delay": false },
+          "$then": { "$delay": "foo" }
+        },
+        "result": null
+      }
+    ]
+  },
+  {
     "description": "$if/$then/$else can be any script",
     "data": {
       "condTrue": true,
@@ -139,6 +222,19 @@
       {
         "description": "$if is a script that evaluates to non-boolean value",
         "script": { "$if": { "$data": "/notBoolean" }, "$then": "foo" },
+        "error": true
+      },
+      {
+        "description": "asynchronous $if evaluates to non-boolean",
+        "script": { "$if": { "$delay": 1 }, "$then": "foo" },
+        "error": true
+      },
+      {
+        "description": "asynchronous $if evaluates to non-boolean",
+        "script": {
+          "$if": { "$data": { "$delay": "/notBoolean" } },
+          "$then": "foo"
+        },
         "error": true
       }
     ]
