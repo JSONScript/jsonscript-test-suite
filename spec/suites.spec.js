@@ -1,7 +1,7 @@
 'use strict';
 
 var glob = require('glob');
-var Ajv = require('Ajv');
+var Ajv = require('ajv');
 var assert = require('assert');
 var path = require('path');
 
