@@ -1,0 +1,238 @@
+[
+  {
+    "description": "$ref to part of the script",
+    "data": { "abc": 2 },
+    "tests": [
+      {
+        "description": "relative reference to constant",
+        "script": { "foo": 1, "bar": { "$ref": "1/foo" } },
+        "result": { "foo": 1, "bar": 1 }
+      },
+      {
+        "description": "absolute reference to constant",
+        "script": { "foo": { "$ref": "/bar" }, "bar": 1 },
+        "result": { "foo": 1, "bar": 1 }
+      },
+      {
+        "description": "relative reference to script",
+        "script": {
+          "foo": { "bar": { "$data": "/abc" } },
+          "baz": { "boo": { "$ref": "2/foo/bar" } }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": { "boo": 2 }
+        }
+      },
+      {
+        "description": "absolute reference to script",
+        "script": {
+          "foo": { "bar": { "$ref": "/baz/boo" } },
+          "baz": { "boo": { "$data": "/abc" } }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": { "boo": 2 }
+        }
+      },
+      {
+        "description": "relative reference to async script",
+        "script": {
+          "foo": { "bar": { "$delay": { "$data": "/abc" } } },
+          "baz": { "boo": { "$ref": "2/foo/bar" } }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": { "boo": 2 }
+        }
+      },
+      {
+        "description": "absolute reference to async script",
+        "script": {
+          "foo": { "bar": { "$ref": "/baz/boo" } },
+          "baz": { "boo": { "$delay": { "$data": "/abc" } } }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": { "boo": 2 }
+        }
+      },
+      {
+        "description": "relative reference (less deep) to async script",
+        "script": {
+          "foo": { "bar": { "$delay": { "$data": "/abc" } } },
+          "baz": { "boo": { "$ref": "2/foo" } }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": { "boo": { "bar": 2 } }
+        }
+      },
+      {
+        "description": "absolute reference (less deep) to async script",
+        "script": {
+          "foo": { "bar": { "$ref": "/baz" } },
+          "baz": { "boo": { "$delay": { "$data": "/abc" } } }
+        },
+        "result": {
+          "foo": { "bar": { "boo": 2 } },
+          "baz": { "boo": 2 }
+        }
+      },
+      {
+        "description": "relative reference (more deep) to async script",
+        "script": {
+          "foo": { "bar": { "$delay": { "$data": "/abc" } } },
+          "baz": { "$ref": "1/foo/bar" }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": 2
+        }
+      },
+      {
+        "description": "absolute reference (more deep) to async script",
+        "script": {
+          "foo": { "$ref": "/baz/boo" },
+          "baz": { "boo": { "$delay": { "$data": "/abc" } } }
+        },
+        "result": {
+          "foo": 2,
+          "baz": { "boo": 2 }
+        }
+      },
+      {
+        "description": "relative reference in async script",
+        "script": {
+          "foo": { "bar": { "$delay": { "$data": "/abc" } } },
+          "baz": { "boo": { "$delay": { "$ref": "2/foo/bar" } } }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": { "boo": 2 }
+        }
+      },
+      {
+        "description": "absolute reference in async script",
+        "script": {
+          "foo": { "bar": { "$delay": { "$ref": "/baz/boo" } } },
+          "baz": { "boo": { "$delay": { "$data": "/abc" } } }
+        },
+        "result": {
+          "foo": { "bar": 2 },
+          "baz": { "boo": 2 }
+        }
+      }
+    ]
+  },
+  {
+    "description": "$ref between array items",
+    "tests": [
+      {
+        "description": "relative reference to array item",
+        "script": {
+          "foo": { "$ref": "1/bar/1" },
+          "bar": [ 1, 2 ]
+        },
+        "result": { "foo": 2, "bar": [ 1, 2 ] }
+      },
+      {
+        "skip": true,
+        "description": "relative reference to async array item",
+        "script": {
+          "foo": { "$ref": "1/bar/1" },
+          "bar": [ 1, { "$delay": 2 } ]
+        },
+        "result": { "foo": 2, "bar": [ 1, 2 ] }
+      },
+      {
+        "description": "relative reference to async array item in object",
+        "script": {
+          "foo": { "$ref": "1/bar/baz/1" },
+          "bar": {
+            "baz": [ 1, { "$delay": 2 } ]
+          }
+        },
+        "result": {
+          "foo": 2,
+          "bar": {
+            "baz": [ 1, 2 ] }
+          }
+      },
+      {
+        "skip": true,
+        "description": "absolute reference to async array item",
+        "script": {
+          "foo": { "$ref": "/bar/1" },
+          "bar": [ 1, { "$delay": 2 } ]
+        },
+        "result": { "foo": 2, "bar": [ 1, 2 ] }
+      },
+      {
+        "description": "absolute reference to async array item in object",
+        "script": {
+          "foo": { "$ref": "1/bar/baz/1" },
+          "bar": {
+            "baz": [ 1, { "$delay": 2 } ]
+          }
+        },
+        "result": {
+          "foo": 2,
+          "bar": {
+            "baz": [ 1, 2 ] }
+          }
+      }
+    ]
+  },
+  {
+    "description": "$ref errors",
+    "tests": [
+      {
+        "description": "relative reference above the root",
+        "script": { "foo": 1, "bar": { "$ref": "2/foo" } },
+        "error": true
+      },
+      {
+        "description": "relative reference to itself",
+        "script": { "bar": { "$ref": "0/" } },
+        "error": true
+      },
+      {
+        "description": "relative reference to itself via parent",
+        "script": { "bar": { "$ref": "1/bar" } },
+        "error": true
+      },
+      {
+        "description": "absolute reference to itself",
+        "script": { "bar": { "$ref": "/bar" } },
+        "error": true
+      },
+      {
+        "description": "relative reference to child",
+        "script": { "bar": { "$ref": "0/foo" } },
+        "error": true
+      },
+      {
+        "description": "relative reference to child via parent",
+        "script": { "bar": { "$ref": "1/bar/foo" } },
+        "error": true
+      },
+      {
+        "description": "absolute reference to child",
+        "script": { "bar": { "$ref": "/bar/foo" } },
+        "error": true
+      },
+      {
+        "skip": true,
+        "description": "relative reference to the previous item in array is OK",
+        "script": [ 1, { "$ref": "1/0" } ],
+        "result": [ 1, 1 ]
+      },
+      {
+        "description": "relative reference to the next item in array is error",
+        "script": [ { "$ref": "1/1" }, 1 ],
+        "error": true
+      }
+    ]
+  }
+]

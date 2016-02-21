@@ -22,6 +22,12 @@
         "description": "evaluates $data with $wait",
         "script": { "$delay": { "$data": "/foo" }, "$wait": 40 },
         "result": "bar"
+      },
+      {
+        "skip": true,
+        "description": "$delay in sequential evaluation",
+        "script": [ 1, { "$delay": 2 }, 3, 4 ],
+        "result": [ 1, 2, 3, 4 ]
       }
     ]
   },
