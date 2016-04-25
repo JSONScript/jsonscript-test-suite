@@ -137,7 +137,6 @@
         "result": { "foo": 2, "bar": [ 1, 2 ] }
       },
       {
-        "skip": true,
         "description": "relative reference to async array item",
         "script": {
           "foo": { "$ref": "1/bar/1" },
@@ -160,7 +159,6 @@
           }
       },
       {
-        "skip": true,
         "description": "absolute reference to async array item",
         "script": {
           "foo": { "$ref": "/bar/1" },
