@@ -1,0 +1,377 @@
+[
+  {
+    "description": "calculations",
+    "tests": [
+      {
+        "description": "method add",
+        "script": {
+          "$exec": "calc",
+          "$method": "add",
+          "$args": [ 1, 2, 3 ]
+        },
+        "result": 6
+      },
+      {
+        "description": "method subtract",
+        "script": {
+          "$exec": "calc",
+          "$method": "subtract",
+          "$args": [ 6, 1, 2 ]
+        },
+        "result": 3
+      },
+      {
+        "description": "method multiply",
+        "script": {
+          "$exec": "calc",
+          "$method": "multiply",
+          "$args": [ 1, 2, 3, 4 ]
+        },
+        "result": 24
+      },
+      {
+        "description": "method divide",
+        "script": {
+          "$exec": "calc",
+          "$method": "divide",
+          "$args": [ 24, 2, 3 ]
+        },
+        "result": 4
+      }
+    ]
+  },
+  {
+    "description": "comparisons",
+    "tests": [
+      {
+        "description": "method equal - equal numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "equal",
+          "$args": [ 1, 1, 1 ]
+        },
+        "result": true
+      },
+      {
+        "description": "method equal - different numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "equal",
+          "$args": [ 1, 1, 2 ]
+        },
+        "result": false
+      },
+      {
+        "description": "method equal - equal strings",
+        "script": {
+          "$exec": "calc",
+          "$method": "equal",
+          "$args": [ "foo", "foo", "foo" ]
+        },
+        "result": true
+      },
+      {
+        "description": "method equal - no type coercion",
+        "script": {
+          "$exec": "calc",
+          "$method": "equal",
+          "$args": [ 1, 1, "1" ]
+        },
+        "result": false
+      },
+      {
+        "description": "method notEqual - equal numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "notEqual",
+          "$args": [ 1, 1, 1 ]
+        },
+        "result": false
+      },
+      {
+        "description": "method notEqual - different numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "notEqual",
+          "$args": [ 1, 1, 2 ]
+        },
+        "result": true
+      },
+      {
+        "description": "method notEqual - equal strings",
+        "script": {
+          "$exec": "calc",
+          "$method": "notEqual",
+          "$args": [ "foo", "foo", "foo" ]
+        },
+        "result": false
+      },
+      {
+        "description": "method notEqual - no type coercion",
+        "script": {
+          "$exec": "calc",
+          "$method": "notEqual",
+          "$args": [ 1, 1, "1" ]
+        },
+        "result": true
+      },
+      {
+        "description": "method greater - descending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "greater",
+          "$args": [ 3, 2, 1 ]
+        },
+        "result": true
+      },
+      {
+        "description": "method greater - not descending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "greater",
+          "$args": [ 3, 2, 2 ]
+        },
+        "result": false
+      },
+      {
+        "description": "method greater - strings",
+        "script": {
+          "$exec": "calc",
+          "$method": "greater",
+          "$args": [ 3, 2, "1" ]
+        },
+        "error": true
+      },
+      {
+        "description": "method lesser - ascending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "lesser",
+          "$args": [ 1, 2, 3 ]
+        },
+        "result": true
+      },
+      {
+        "description": "method lesser - not ascending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "lesser",
+          "$args": [ 1, 2, 2 ]
+        },
+        "result": false
+      },
+      {
+        "description": "method lesser - strings",
+        "script": {
+          "$exec": "calc",
+          "$method": "lesser",
+          "$args": [ 1, 2, "3" ]
+        },
+        "error": true
+      },
+      {
+        "description": "method greaterEqual - not ascending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "greaterEqual",
+          "$args": [ 3, 2, 2 ]
+        },
+        "result": true
+      },
+      {
+        "description": "method greaterEqual - ascending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "greaterEqual",
+          "$args": [ 3, 2, 3 ]
+        },
+        "result": false
+      },
+      {
+        "description": "method greaterEqual - strings",
+        "script": {
+          "$exec": "calc",
+          "$method": "greaterEqual",
+          "$args": [ 3, 2, "2" ]
+        },
+        "error": true
+      },
+      {
+        "description": "method lesserEqual - ascending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "lesserEqual",
+          "$args": [ 1, 2, 2 ]
+        },
+        "result": true
+      },
+      {
+        "description": "method lesserEqual - not ascending numbers",
+        "script": {
+          "$exec": "calc",
+          "$method": "lesserEqual",
+          "$args": [ 1, 2, 1 ]
+        },
+        "result": false
+      },
+      {
+        "description": "method lesserEqual - strings",
+        "script": {
+          "$exec": "calc",
+          "$method": "lesserEqual",
+          "$args": [ 1, 2, "2" ]
+        },
+        "error": true
+      }
+    ]
+  },
+  {
+    "description": "boolean operations",
+    "tests": [
+      {
+        "description": "method and - all true",
+        "script": {
+          "$exec": "calc",
+          "$method": "and",
+          "$args": [ true, true, true ]
+        },
+        "result": true
+      },
+      {
+        "description": "method and - not all true",
+        "script": {
+          "$exec": "calc",
+          "$method": "and",
+          "$args": [ true, false, true ]
+        },
+        "result": false
+      },
+      {
+        "description": "method and - no coercion",
+        "script": {
+          "$exec": "calc",
+          "$method": "and",
+          "$args": [ true, true, "true" ]
+        },
+        "error": true
+      },
+      {
+        "description": "method and - short circuit",
+        "script": {
+          "$exec": "calc",
+          "$method": "and",
+          "$args": [ true, false, "true" ]
+        },
+        "result": false
+      },
+      {
+        "description": "method or - some true",
+        "script": {
+          "$exec": "calc",
+          "$method": "or",
+          "$args": [ true, false, true ]
+        },
+        "result": true
+      },
+      {
+        "description": "method or - none true",
+        "script": {
+          "$exec": "calc",
+          "$method": "or",
+          "$args": [ false, false, false ]
+        },
+        "result": false
+      },
+      {
+        "description": "method or - no coercion",
+        "script": {
+          "$exec": "calc",
+          "$method": "or",
+          "$args": [ "true", false, true ]
+        },
+        "error": true
+      },
+      {
+        "description": "method or - short circuit",
+        "script": {
+          "$exec": "calc",
+          "$method": "or",
+          "$args": [ true, false, "true" ]
+        },
+        "result": true
+      },
+      {
+        "description": "method xor - only one true",
+        "script": {
+          "$exec": "calc",
+          "$method": "xor",
+          "$args": [ false, true, false ]
+        },
+        "result": true
+      },
+      {
+        "description": "method xor - none true",
+        "script": {
+          "$exec": "calc",
+          "$method": "xor",
+          "$args": [ false, false, false ]
+        },
+        "result": false
+      },
+      {
+        "description": "method xor - more than one true",
+        "script": {
+          "$exec": "calc",
+          "$method": "xor",
+          "$args": [ false, true, true ]
+        },
+        "result": false
+      },
+      {
+        "description": "method xor - no coercion",
+        "script": {
+          "$exec": "calc",
+          "$method": "xor",
+          "$args": [ "false", true, false ]
+        },
+        "error": true
+      },
+      {
+        "description": "method xor - short circuit",
+        "script": {
+          "$exec": "calc",
+          "$method": "xor",
+          "$args": [ true, true, "false" ]
+        },
+        "result": false
+      },
+      {
+        "description": "method not - true",
+        "script": {
+          "$exec": "calc",
+          "$method": "not",
+          "$args": true
+        },
+        "result": false
+      },
+      {
+        "description": "method not - false",
+        "script": {
+          "$exec": "calc",
+          "$method": "not",
+          "$args": false
+        },
+        "result": true
+      },
+      {
+        "description": "method not - no coercion",
+        "script": {
+          "$exec": "calc",
+          "$method": "not",
+          "$args": "true"
+        },
+        "error": true
+      }
+    ]
+  }
+]

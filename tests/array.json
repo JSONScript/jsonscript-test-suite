@@ -1,0 +1,260 @@
+[
+  {
+    "description": "array method map",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "map over array using function, $args is object",
+        "script": {
+          "$exec": "array",
+          "$method": "map",
+          "$args": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$exec": "router1",
+                "$method": "get",
+                "$args": {
+                  "path": { "$data": "/path" }
+                }
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": [
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1",
+          "you requested /resource/3 from router1"
+        ]
+      },
+      {
+        "description": "map over array using function, $args is array",
+        "script": {
+          "$exec": "array",
+          "$method": "map",
+          "$args": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$exec": "router1",
+                "$method": "get",
+                "$args": {
+                  "path": { "$data": "/path" }
+                }
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": [
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1",
+          "you requested /resource/3 from router1"
+        ]
+      }
+    ]
+  },
+  {
+    "description": "array method every",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "test every item of array using function, $args is object",
+        "script": {
+          "$exec": "array",
+          "$method": "every",
+          "$args": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$exec": "calc",
+                "$method": "equal",
+                "$args": [
+                  {
+                    "$exec": "router1",
+                    "$method": "get",
+                    "$args": {
+                      "path": { "$data": "/path" }
+                    }                      
+                  },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": false
+      },
+      {
+        "description": "test every item of array using function, $args is array",
+        "script": {
+          "$exec": "array",
+          "$method": "every",
+          "$args": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$exec": "calc",
+                "$method": "equal",
+                "$args": [
+                  {
+                    "$exec": "router1",
+                    "$method": "get",
+                    "$args": {
+                      "path": { "$data": "/path" }
+                    }                      
+                  },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": false
+      }
+    ]    
+  },
+  {
+    "description": "array method some",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "test that some item passes using function, $args is object",
+        "script": {
+          "$exec": "array",
+          "$method": "some",
+          "$args": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$exec": "calc",
+                "$method": "equal",
+                "$args": [
+                  {
+                    "$exec": "router1",
+                    "$method": "get",
+                    "$args": {
+                      "path": { "$data": "/path" }
+                    }                      
+                  },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": true
+      },
+      {
+        "description": "test that some item passes using function, $args is array",
+        "script": {
+          "$exec": "array",
+          "$method": "some",
+          "$args": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$exec": "calc",
+                "$method": "equal",
+                "$args": [
+                  {
+                    "$exec": "router1",
+                    "$method": "get",
+                    "$args": {
+                      "path": { "$data": "/path" }
+                    }                      
+                  },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": true
+      }
+    ]    
+  },
+  {
+    "description": "array method filter",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "filter items using function, $args is object",
+        "script": {
+          "$exec": "array",
+          "$method": "filter",
+          "$args": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$exec": "calc",
+                "$method": "equal",
+                "$args": [
+                  {
+                    "$exec": "router1",
+                    "$method": "get",
+                    "$args": {
+                      "path": { "$data": "/path" }
+                    }                      
+                  },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": [ "/resource/1" ]
+      },
+      {
+        "description": "filter items using function, $args is array",
+        "script": {
+          "$exec": "array",
+          "$method": "filter",
+          "$args": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$exec": "calc",
+                "$method": "equal",
+                "$args": [
+                  {
+                    "$exec": "router1",
+                    "$method": "get",
+                    "$args": {
+                      "path": { "$data": "/path" }
+                    }                      
+                  },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": [ "/resource/1" ]
+      }
+    ]    
+  }
+]
