@@ -33,6 +33,100 @@
         ]
       },
       {
+        "description": "map over array using function, function is referenced by name",
+        "script": [
+          {
+            "$func": {
+              "$exec": "router1",
+              "$method": "get",
+              "$args": {
+                "path": { "$data": "/path" }
+              }
+            },
+            "$name": "getFunc",
+            "$args": ["path"]
+          },
+          {
+            "$exec": "array",
+            "$method": "map",
+            "$args": {
+              "data": { "$data": "" },
+              "iterator": { "$func": "getFunc" }
+            }
+          }
+        ],
+        "result": [
+          null,
+          [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        ]
+      },
+      {
+        "skip": true,
+        "description": "map over array using function, function is referenced with $ref to array item",
+        "script": [
+          {
+            "$func": {
+              "$exec": "router1",
+              "$method": "get",
+              "$args": {
+                "path": { "$data": "/path" }
+              }
+            },
+            "$args": ["path"]
+          },
+          {
+            "$exec": "array",
+            "$method": "map",
+            "$args": {
+              "data": { "$data": "" },
+              "iterator": { "$ref": "/0" }
+            }
+          }
+        ],
+        "result": [
+          null,
+          [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        ]
+      },
+      {
+        "description": "map over array using function, function is referenced with $ref to property",
+        "script": {
+          "getFunc": {
+            "$func": {
+              "$exec": "router1",
+              "$method": "get",
+              "$args": {
+                "path": { "$data": "/path" }
+              }
+            },
+            "$args": ["path"]
+          },
+          "data": {
+            "$exec": "array",
+            "$method": "map",
+            "$args": {
+              "data": { "$data": "" },
+              "iterator": { "$ref": "/getFunc" }
+            }
+          }
+        },
+        "result": {
+          "data": [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        }
+      },
+      {
         "description": "map over array using function, $args is array",
         "script": {
           "$exec": "array",
