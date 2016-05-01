@@ -1,0 +1,31 @@
+[
+  {
+    "description": "$quote - use value without evaluation",
+    "tests": [
+      {
+        "description": "without $quote the script is evaluated",
+        "script": {
+          "$exec": "router1",
+          "$method": "get",
+          "$args": { "path": "/resource/1" }
+        },
+        "result": "you requested /resource/1 from router1"
+      },
+      {
+        "description": "with $quote the script returned as is",
+        "script": {
+          "$quote": {
+            "$exec": "router1",
+            "$method": "get",
+            "$args": { "path": "/resource/1" }
+          }
+        },
+        "result": {
+          "$exec": "router1",
+          "$method": "get",
+          "$args": { "path": "/resource/1" }
+        }
+      }
+    ]
+  }
+]
