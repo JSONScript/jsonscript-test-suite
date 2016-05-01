@@ -127,6 +127,38 @@
         }
       },
       {
+        "description": "map over array using function, function args have schemas",
+        "script": {
+          "getFunc": {
+            "$func": {
+              "$exec": "router1",
+              "$method": "get",
+              "$args": {
+                "path": { "$data": "/path" }
+              }
+            },
+            "$args": [
+              { "path": { "type": "string" } }
+            ]
+          },
+          "data": {
+            "$exec": "array",
+            "$method": "map",
+            "$args": {
+              "data": { "$data": "" },
+              "iterator": { "$ref": "/getFunc" }
+            }
+          }
+        },
+        "result": {
+          "data": [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        }
+      },
+      {
         "description": "map over array using function, $args is array",
         "script": {
           "$exec": "array",

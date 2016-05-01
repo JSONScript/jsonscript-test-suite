@@ -1,0 +1,110 @@
+[
+  {
+    "description": "$call function",
+    "tests": [
+      {
+        "description": "call function by name",
+        "script": [
+          {
+            "$func": {
+              "$exec": "router1",
+              "$method": "get",
+              "$args": { "path": { "$data": "/path" } }
+            },
+            "$name": "getRes",
+            "$args": [ "path" ]
+          },
+          {
+            "$call": "getRes",
+            "$args": [ "/resource/1" ]
+          },
+          {
+            "$call": "getRes",
+            "$args": [ "/resource/2" ]
+          }
+        ],
+        "result": [
+          null,
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1"
+        ]
+      },
+      {
+        "description": "call function by reference",
+        "script": {
+          "getRes": {
+            "$func": {
+              "$exec": "router1",
+              "$method": "get",
+              "$args": { "path": { "$data": "/path" } }
+            },
+            "$args": [ "path" ]
+          },
+          "data": [
+            {
+              "$call": { "$ref": "/getRes" },
+              "$args": [ "/resource/1" ]
+            },
+            {
+              "$call": { "$ref": "/getRes" },
+              "$args": [ "/resource/2" ]
+            }
+          ]
+        },
+        "result": {
+          "data": [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1"
+          ]
+        }
+      },
+      {
+        "description": "call function by func ref",
+        "script": [
+          {
+            "$func": {
+              "$exec": "router1",
+              "$method": "get",
+              "$args": { "path": { "$data": "/path" } }
+            },
+            "$name": "getRes",
+            "$args": [ "path" ]
+          },
+          {
+            "$call": { "$func": "getRes" },
+            "$args": [ "/resource/1" ]
+          },
+          {
+            "$call": { "$func": "getRes" },
+            "$args": [ "/resource/2" ]
+          }
+        ],
+        "result": [
+          null,
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1"
+        ]
+      }
+    ]
+  },
+  {
+    "description": "$call errors",
+    "tests": [
+      {
+        "description": "function name is invalid",
+        "script": { "$call": "foo%bar" },
+        "error": true
+      },
+      {
+        "description": "function is not defined",
+        "script": { "$call": "foobar" },
+        "error": true
+      },
+      {
+        "description": "$call value is neither a string nor a function",
+        "script": { "$call": {} },
+        "error": true
+      }
+    ]
+  }
+]
