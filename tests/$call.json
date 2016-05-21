@@ -30,6 +30,25 @@
         ]
       },
       {
+        "description": "call function by name with macros",
+        "script": [
+          {
+            "$func": {
+              "$$router1.get": { "path": { "$data": "/path" } }
+            },
+            "$name": "getRes",
+            "$args": [ "path" ]
+          },
+          { "$#getRes": [ "/resource/1" ] },
+          { "$#getRes": [ "/resource/2" ] }
+        ],
+        "result": [
+          null,
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1"
+        ]
+      },
+      {
         "description": "call function by reference",
         "script": {
           "getRes": {
@@ -59,6 +78,33 @@
         }
       },
       {
+        "description": "call function by reference with macros",
+        "script": {
+          "getRes": {
+            "$func": {
+              "$$router1.get": { "path": { "$data": "/path" } }
+            },
+            "$args": [ "path" ]
+          },
+          "data": [
+            {
+              "$call": { "$ref": "/getRes" },
+              "$args": [ "/resource/1" ]
+            },
+            {
+              "$call": { "$ref": "/getRes" },
+              "$args": [ "/resource/2" ]
+            }
+          ]
+        },
+        "result": {
+          "data": [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1"
+          ]
+        }
+      },
+      {
         "description": "call function by func ref",
         "script": [
           {
@@ -66,6 +112,31 @@
               "$exec": "router1",
               "$method": "get",
               "$args": { "path": { "$data": "/path" } }
+            },
+            "$name": "getRes",
+            "$args": [ "path" ]
+          },
+          {
+            "$call": { "$func": "getRes" },
+            "$args": [ "/resource/1" ]
+          },
+          {
+            "$call": { "$func": "getRes" },
+            "$args": [ "/resource/2" ]
+          }
+        ],
+        "result": [
+          null,
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1"
+        ]
+      },
+      {
+        "description": "call function by func ref with macros",
+        "script": [
+          {
+            "$func": {
+              "$$router1.get": { "path": { "$data": "/path" } }
             },
             "$name": "getRes",
             "$args": [ "path" ]

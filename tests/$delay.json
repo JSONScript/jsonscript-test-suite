@@ -74,6 +74,21 @@
           "$wait": 20
         },
         "result": "you requested /resource from router1"
+      },
+      {
+        "description": "evaluates $exec with macros",
+        "script": {
+          "$delay": { "$$router1.get": { "path": "/resource" } }
+        },
+        "result": "you requested /resource from router1"
+      },
+      {
+        "description": "evaluates $exec with $wait with macros",
+        "script": {
+          "$delay": { "$$router1.get": { "path": "/resource" } },
+          "$wait": 20
+        },
+        "result": "you requested /resource from router1"
       }
     ]
   },

@@ -10,7 +10,7 @@ describe('test suites', function() {
   var validate;
 
   before(function() {
-    var ajv = Ajv({ allErrors: true });
+    var ajv = Ajv({ allErrors: true, v5: true });
     ajv.addSchema(require('jsonscript/schema/schema.json'));
     validate = ajv.compile(require('../test_suite_schema.json'));
   });

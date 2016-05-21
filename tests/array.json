@@ -249,7 +249,7 @@
         },
         "result": false
       }
-    ]    
+    ]
   },
   {
     "description": "array method some",
@@ -315,7 +315,7 @@
         },
         "result": true
       }
-    ]    
+    ]
   },
   {
     "description": "array method filter",
@@ -381,6 +381,294 @@
         },
         "result": [ "/resource/1" ]
       }
-    ]    
+    ]
+  },
+  {
+    "description": "array method map with macros",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "map over array using function, $args is object",
+        "script": {
+          "$$array.map": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$$router1.get": { "path": { "$data": "/path" } }
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": [
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1",
+          "you requested /resource/3 from router1"
+        ]
+      },
+      {
+        "description": "map over array using function, function is referenced by name",
+        "script": [
+          {
+            "$func": {
+              "$$router1.get": { "path": { "$data": "/path" } }
+            },
+            "$name": "getFunc",
+            "$args": ["path"]
+          },
+          {
+            "$$array.map": {
+              "data": { "$data": "" },
+              "iterator": { "$func": "getFunc" }
+            }
+          }
+        ],
+        "result": [
+          null,
+          [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        ]
+      },
+      {
+        "skip": true,
+        "description": "map over array using function, function is referenced with $ref to array item",
+        "script": [
+          {
+            "$func": {
+              "$$router1.get": { "path": { "$data": "/path" } }
+            },
+            "$args": ["path"]
+          },
+          {
+            "$$array.map": {
+              "data": { "$data": "" },
+              "iterator": { "$ref": "/0" }
+            }
+          }
+        ],
+        "result": [
+          null,
+          [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        ]
+      },
+      {
+        "description": "map over array using function, function is referenced with $ref to property",
+        "script": {
+          "getFunc": {
+            "$func": {
+              "$$router1.get": { "path": { "$data": "/path" } }
+            },
+            "$args": ["path"]
+          },
+          "data": {
+            "$$array.map": {
+              "data": { "$data": "" },
+              "iterator": { "$ref": "/getFunc" }
+            }
+          }
+        },
+        "result": {
+          "data": [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        }
+      },
+      {
+        "description": "map over array using function, function args have schemas",
+        "script": {
+          "getFunc": {
+            "$func": {
+              "$$router1.get": { "path": { "$data": "/path" } }
+            },
+            "$args": [
+              { "path": { "type": "string" } }
+            ]
+          },
+          "data": {
+            "$$array.map": {
+              "data": { "$data": "" },
+              "iterator": { "$ref": "/getFunc" }
+            }
+          }
+        },
+        "result": {
+          "data": [
+            "you requested /resource/1 from router1",
+            "you requested /resource/2 from router1",
+            "you requested /resource/3 from router1"
+          ]
+        }
+      },
+      {
+        "description": "map over array using function, $args is array",
+        "script": {
+          "$$array.map": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$$router1.get": { "path": { "$data": "/path" } }
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": [
+          "you requested /resource/1 from router1",
+          "you requested /resource/2 from router1",
+          "you requested /resource/3 from router1"
+        ]
+      }
+    ]
+  },
+  {
+    "description": "array method every with macros",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "test every item of array using function, $args is object",
+        "script": {
+          "$$array.every": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$==": [
+                  { "$$router1.get": { "path": { "$data": "/path" } } },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": false
+      },
+      {
+        "description": "test every item of array using function, $args is array",
+        "script": {
+          "$$array.every": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$==": [
+                  { "$$router1.get": { "path": { "$data": "/path" } } },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": false
+      }
+    ]
+  },
+  {
+    "description": "array method some with macros",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "test that some item passes using function, $args is object",
+        "script": {
+          "$$array.some": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$==": [
+                  { "$$router1.get": { "path": { "$data": "/path" } } },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": true
+      },
+      {
+        "description": "test that some item passes using function, $args is array",
+        "script": {
+          "$$array.some": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$==": [
+                  { "$$router1.get": { "path": { "$data": "/path" } } },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": true
+      }
+    ]
+  },
+  {
+    "description": "array method filter with macros",
+    "data": [
+      "/resource/1",
+      "/resource/2",
+      "/resource/3"
+    ],
+    "tests": [
+      {
+        "description": "filter items using function, $args is object",
+        "script": {
+          "$$array.filter": {
+            "data": { "$data": "" },
+            "iterator": {
+              "$func": {
+                "$==": [
+                  { "$$router1.get": { "path": { "$data": "/path" } } },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          }
+        },
+        "result": [ "/resource/1" ]
+      },
+      {
+        "description": "filter items using function, $args is array",
+        "script": {
+          "$$array.filter": [
+            { "$data": "" },
+            {
+              "$func": {
+                "$==" : [
+                  { "$$router1.get": { "path": { "$data": "/path" } } },
+                  "you requested /resource/1 from router1"
+                ]
+              },
+              "$args": ["path"]
+            }
+          ]
+        },
+        "result": [ "/resource/1" ]
+      }
+    ]
   }
 ]

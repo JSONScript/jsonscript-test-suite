@@ -1,6 +1,6 @@
 {
   "id": "https://raw.githubusercontent.com/JSONScript/jsonscript-test/master/test_suite_schema.json",
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/json-schema-v5.json#",
   "description": "schema for the test suite of the JSONScript scripts",
   "definitions": {
     "nonEmptyString": {
