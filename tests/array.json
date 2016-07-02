@@ -65,7 +65,6 @@
         ]
       },
       {
-        "skip": true,
         "description": "map over array using function, function is referenced with $ref to array item",
         "script": [
           {
@@ -437,7 +436,6 @@
         ]
       },
       {
-        "skip": true,
         "description": "map over array using function, function is referenced with $ref to array item",
         "script": [
           {

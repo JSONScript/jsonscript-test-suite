@@ -226,6 +226,11 @@
         "result": [ 1, 1 ]
       },
       {
+        "description": "relative reference to the previous script in array is OK",
+        "script": [ { "$quote": 1 }, { "$ref": "1/0" } ],
+        "result": [ 1, 1 ]
+      },
+      {
         "skip": true,
         "description": "relative reference to the next item in array is error",
         "script": [ { "$ref": "1/1" }, 1 ],
