@@ -231,7 +231,6 @@
         "result": [ 1, 1 ]
       },
       {
-        "skip": true,
         "description": "relative reference to the next item in array is error",
         "script": [ { "$ref": "1/1" }, 1 ],
         "error": true
