@@ -1,0 +1,159 @@
+[
+  {
+    "description": "string methods macro syntax",
+    "tests": [
+      {
+        "description": "method concat",
+        "script": { "$$str.concat": [ "a", "b", "c" ] },
+        "result": "abc"
+      },
+      {
+        "description": "method slice",
+        "script": { "$$str.slice": [ "foobar", 1, 4 ] },
+        "result": "oob"
+      },
+      {
+        "description": "method slice - only start specified",
+        "script": { "$$str.slice": [ "foobar", 3 ] },
+        "result": "bar"
+      },
+      {
+        "description": "method slice - relative end",
+        "script": { "$$str.slice": [ "foobar", 0, -1 ] },
+        "result": "fooba"
+      },
+      {
+        "description": "method pos",
+        "script": { "$$str.pos": [ "foobar", "bar" ] },
+        "result": 3
+      },
+      {
+        "description": "method pos, str not found",
+        "script": { "$$str.pos": [ "foobar", "abc" ] },
+        "result": -1
+      },
+      {
+        "description": "method lower",
+        "script": { "$$str.lower": "FooBar" },
+        "result": "foobar"
+      },
+      {
+        "description": "method upper",
+        "script": { "$$str.upper": "FooBar" },
+        "result": "FOOBAR"
+      }
+    ]
+  },
+  {
+    "description": "string methods full syntax",
+    "tests": [
+      {
+        "description": "method concat",
+        "script": {
+          "$exec": "str",
+          "$method": "concat",
+          "$args": [ "a", "b", "c" ]
+        },
+        "result": "abc"
+      },
+      {
+        "description": "method slice",
+        "script": {
+          "$exec": "str",
+          "$method": "slice",
+          "$args": [ "foobar", 1, 4 ]
+        },
+        "result": "oob"
+      },
+      {
+        "description": "method slice - only start specified",
+        "script": {
+          "$exec": "str",
+          "$method": "slice",
+          "$args": [ "foobar", 3 ]
+        },
+        "result": "bar"
+      },
+      {
+        "description": "method slice - relative end",
+        "script": {
+          "$exec": "str",
+          "$method": "slice",
+          "$args": [ "foobar", 0, -1 ]
+        },
+        "result": "fooba"
+      },
+      {
+        "description": "method pos",
+        "script": {
+          "$exec": "str",
+          "$method": "pos",
+          "$args": [ "foobar", "bar" ]
+        },
+        "result": 3
+      },
+      {
+        "description": "method pos, str not found",
+        "script": {
+          "$exec": "str",
+          "$method": "pos",
+          "$args": [ "foobar", "abc" ]
+        },
+        "result": -1
+      },
+      {
+        "description": "method lower",
+        "script": {
+          "$exec": "str",
+          "$method": "lower",
+          "$args": "FooBar"
+        },
+        "result": "foobar"
+      },
+      {
+        "description": "method upper",
+        "script": {
+          "$exec": "str",
+          "$method": "upper",
+          "$args": "FooBar"
+        },
+        "result": "FOOBAR"
+      }
+    ]
+  },
+  {
+    "description": "string methods errors",
+    "tests": [
+      {
+        "description": "method concat - arguments should be strings",
+        "script": { "$$str.concat": [ 1, 2, 3 ] },
+        "error": true
+      },
+      {
+        "description": "method slice - first argument should be string",
+        "script": { "$$str.slice": [ 123, 1, 2 ] },
+        "error": true
+      },
+      {
+        "description": "method slice - indices should be numbers",
+        "script": { "$$str.slice": [ "foobar", "3" ] },
+        "error": true
+      },
+      {
+        "description": "method pos - arguments should be strings",
+        "script": { "$$str.pos": [ 1234, 23 ] },
+        "error": true
+      },
+      {
+        "description": "method lower - argument should be string",
+        "script": { "$$str.lower": 1234 },
+        "error": true
+      },
+      {
+        "description": "method upper - argument should be string",
+        "script": { "$$str.upper": 1234 },
+        "error": true
+      }
+    ]
+  }
+]
