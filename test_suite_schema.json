@@ -55,7 +55,7 @@
       "skip": { "type": "boolean" },
       "script": {
         "description": "JSONScript to test",
-        "$ref": "http://www.json-script.com/schema/schema.json#"
+        "$ref": "http://www.jsonscript.org/schema/schema.json#"
       },
       "data": {
         "description": "data instance, can be any type"
@@ -77,7 +77,7 @@
             "skip": { "type": "boolean" },
             "script": {
               "description": "JSONScript to test",
-              "$ref": "http://www.json-script.com/schema/schema.json#"
+              "$ref": "http://www.jsonscript.org/schema/schema.json#"
             },
             "data": {
               "description": "data instance, can be any type"
